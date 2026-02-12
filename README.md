@@ -1,59 +1,326 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_LARAVEL12_LARATRUST
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+```php
+- Laravel 12 Based Role & Permission Management Web Application
+- Built using Clean MVC Architecture
+- Laravel 12 based Access Control System using Laratrust Package
+```
 
-## About Laravel
+# Key Features
+```php
+- User Authentication (Login / Register)
+- Role Based Access Control (RBAC)
+- Permission Based Authorization
+- Route Middleware Protection
+- Database Driven Role System
+- Clean MVC Architecture
+- Secure Access Management
+- Laravel 12 Compatible
+- Scalable Enterprise Structure
+- Beginner Friendly Setup
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Step 1: Install Fresh Laravel 12 Application
+Open Terminal / Command Prompt:
+```php
+composer create-project laravel/laravel:^12.0 PHP_LARAVEL12_LARATRUST
+```
+Move into project directory:
+```php
+cd PHP_LARAVEL12_LARATRUST
+```
+Generate application key:
+```php
+php artisan key:generate
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Explanation
+```php
+- Installs fresh Laravel 12 project
+- Generates unique application key
+- Required for encryption, sessions, and security
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Step 2: Configure Environment & Database
+Open .env file and update:
+```php
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_DATABASE=php_laravel12_laratrust
+DB_USERNAME=root
+DB_PASSWORD=
+```
+Create database in phpMyAdmin:
+```php
+php_laravel12_laratrust
+```
+Run default migrations:
+```php
+php artisan migrate
+```
+# Explanation
+```php
+- .env manages environment settings
+```
 
-## Learning Laravel
+# Step 3: Install Authentication (Laravel Breeze)
+Install Breeze:
+```php
+composer require laravel/breeze --dev
+```
+Install scaffolding:
+```php
+php artisan breeze:install
+```
+Install frontend dependencies:
+```php
+- npm install
+- npm run dev
+```
+Run migrations:
+```php
+php artisan migrate
+```
+Breeze provides:
+```php
+- Login
+- Register
+- Password Reset
+- Auth Middleware Protection
+- Clean Blade UI
+```
+Authentication is required before implementing roles.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+# Step 4: Install Laratrust Package
+Install package:
+```php
+composer require santigarcor/laratrust
+```
+# Explanation
+```php
+- Laratrust is an Eloquent-based package for managing:
+- Roles
+- Permissions
+- User-Role relationships
+- Role-Permission relationships
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Step 5: Publish Laratrust Configuration
+```php
+php artisan vendor:publish --provider="Laratrust\LaratrustServiceProvider"
+```
 
-## Laravel Sponsors
+# Step 6: Setup Laratrust Tables
+Run setup command:
+```php
+php artisan laratrust:setup
+```
+Then run migrations:
+```php
+php artisan migrate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Step 7: Configure User Model
+Open:
+```php
+app/Models/User.php
+```
+```php
+<?php
 
-### Premium Partners
+namespace App\Models;
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Laratrust\Traits\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 
-## Contributing
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable, HasRolesAndPermissions;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
-## Code of Conduct
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+}
+```
 
-## Security Vulnerabilities
+# Step 8: Create Role & Permission Seeder
+Create seeder:
+```php
+php artisan make:seeder RolePermissionSeeder
+```
+Open:
+```php
+database/seeders/RolePermissionSeeder.php
+```
+```php
+<?php
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+namespace Database\Seeders;
 
-## License
+use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+class RolePermissionSeeder extends Seeder
+{
+    public function run()
+    {
+        // Create Roles
+        $adminRole =Role::create([
+    'name' => 'Admin',
+    'slug' => 'admin'
+]);
+       
+
+        $userRole = Role::create([
+    'name' => 'Admin',
+    'slug' => 'admin'
+]);
+
+        // Create Permission
+        $createPost = Permission::create([
+            'name' => 'create-post',
+            'display_name' => 'Create Post',
+            'description' => 'Create Post Permission'
+        ]);
+
+        $adminRole->attachPermission($createPost);
+
+        // Create Admin User
+        $user = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456')
+        ]);
+
+        $user->attachRole($adminRole);
+    }
+
+    
+}
+```
+Run seeder:
+```php
+php artisan db:seed --class=RolePermissionSeeder
+```
+
+# Step 9: Protect Routes Using Role
+Open:
+```php
+routes/web.php
+```
+```php
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Models\User;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::get('/check-role', function () {
+
+    if (!auth()->check()) {
+        return "Please Login First";
+    }
+
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return "User is Admin";
+    }
+
+    return "User is Not Admin";
+})->middleware('auth');
+
+
+require __DIR__.'/auth.php';
+```
+
+# Step 10: Run Laravel Project
+Start server:
+```php
+php artisan serve
+```
+
+Open browser:
+```php
+http://127.0.0.1:8000
+```
+<img width="1237" height="627" alt="image" src="https://github.com/user-attachments/assets/dd36e188-2130-407f-8e29-391b1f9d94b7" />
+
+```php
+http://127.0.0.1:8000/check-role
+```
+<img width="811" height="370" alt="image" src="https://github.com/user-attachments/assets/9e2120d1-0193-4fe3-9962-1b8ddc07613d" />
+
+# Project Folder Structure
+```php
+PHP_LARAVEL12_LARATRUST
+├── app/
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Role.php
+│   │   └── Permission.php
+│   └── Http/
+│       └── Controllers/
+│
+├── config/
+│   └── laratrust.php
+│
+├── database/
+│   ├── migrations/
+│   └── seeders/
+│
+├── routes/
+│   └── web.php
+│
+├── resources/
+│   └── views/
+│
+├── .env
+├── artisan
+└── composer.json
+```
+
+# Explanation
+```php
+- Role Based Access Control (RBAC)
+- Permission Based Authorization
+- Secure Route Protection
+- Database Driven Access System
+- Middleware Integration
+- Enterprise Ready Architecture
+- Laravel 12 Compatible
+```
+
+              
