@@ -1,17 +1,41 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
+<div class="max-w-7xl mx-auto p-6">
+
+    <div class="grid grid-cols-3 gap-4">
+
+        <div class="bg-blue-500 text-white p-5 rounded">
+
+            <h2>Total Users</h2>
+
+            <h1 class="text-3xl">
+                {{ $totalUsers }}
+            </h1>
+
         </div>
+
+        <div class="bg-green-500 text-white p-5 rounded">
+
+            <h2>Total Roles</h2>
+
+            <h1 class="text-3xl">
+                {{ $totalRoles }}
+            </h1>
+
+        </div>
+
+        <div class="bg-red-500 text-white p-5 rounded">
+
+            <h2>Total Permissions</h2>
+
+            <h1 class="text-3xl">
+                {{ $totalPermissions }}
+            </h1>
+
+        </div>
+
     </div>
+
+</div>
+
 </x-app-layout>
