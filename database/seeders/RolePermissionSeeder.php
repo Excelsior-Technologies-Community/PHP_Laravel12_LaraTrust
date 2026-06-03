@@ -11,36 +11,37 @@ class RolePermissionSeeder extends Seeder
 {
     public function run()
     {
-        // Create Roles
-        $adminRole =Role::create([
-    'name' => 'Admin',
-    'slug' => 'admin'
-]);
-       
+        // ROLES
+        $adminRole = Role::firstOrCreate([
+            'name' => 'Admin',
+            'slug' => 'admin'
+        ]);
 
-        $userRole = Role::create([
-    'name' => 'Admin',
-    'slug' => 'admin'
-]);
+        $userRole = Role::firstOrCreate([
+            'name' => 'User',
+            'slug' => 'user'
+        ]);
 
-        // Create Permission
-        $createPost = Permission::create([
-            'name' => 'create-post',
+        // PERMISSION
+        $createPost = Permission::firstOrCreate([
+            'name' => 'create-post'
+        ], [
             'display_name' => 'Create Post',
             'description' => 'Create Post Permission'
         ]);
 
-        $adminRole->attachPermission($createPost);
+        // ASSIGN PERMISSION TO ROLE
+        $adminRole->permissions()->syncWithoutDetaching([$createPost->id]);
 
-        // Create Admin User
-        $user = User::create([
+        // USER
+        $adminUser = User::firstOrCreate([
+            'email' => 'admin@gmail.com'
+        ], [
             'name' => 'Admin',
-            'email' => 'admin@gmail.com',
             'password' => bcrypt('123456')
         ]);
 
-        $user->attachRole($adminRole);
+        // ASSIGN ROLE (Laratrust correct way)
+        $adminUser->syncRoles([$adminRole->id]);
     }
-
-    
 }

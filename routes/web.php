@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -38,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 });
+
+Route::get('/users-export', [UserController::class, 'export'])
+    ->name('users.export');
 
 Route::get('/check-role', function () {
 
