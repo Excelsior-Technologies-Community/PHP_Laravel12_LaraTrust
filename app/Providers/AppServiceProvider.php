@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Relation::morphMap([
+            'users' => User::class,
+            'roles' => Role::class,
+            'permissions' => Permission::class,
+        ]);
     }
 }
